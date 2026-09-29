@@ -12,7 +12,7 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 html { font-size: 100%; }
-body { margin: 0; background: var(--bg); color: var(--text); font-family: Arial, Helvetica, sans-serif; font-size: 1rem; line-height: 1.55; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: Arial, Helvetica, sans-serif; font-size: 1rem; line-height: 1.3; }
 
 .skip-link { position: absolute; left: -9999px; top: 0; background: var(--blue); color: #fff; padding: .6rem 1rem; z-index: 100; font-weight: bold; }
 .skip-link:focus { left: 1rem; top: 1rem; }
@@ -24,35 +24,38 @@ a:focus-visible, button:focus-visible, video:focus-visible, summary:focus-visibl
 }
 main:focus { outline: none; }
 
-.page { max-width: 960px; margin: 20px auto; padding: 0 16px; }
-
-/* Masthead: 240px title panel + 720px banner, as on the original site */
-.masthead { display: flex; flex-wrap: wrap; margin-bottom: 20px; }
-.titlepanel { background: var(--blue); width: 240px; min-height: 240px; padding: 10px; flex: 0 0 240px; }
+/* Page grid: 240px title panel and menu column + 720px banner and content column, as on the original site.
+   Pages without a banner (e.g. Research) start their content at the top, beside the title panel. */
+.page { max-width: 992px; margin: 20px auto; padding: 0 16px;
+  display: grid; grid-template-columns: 240px minmax(0, 720px);
+  grid-template-areas: "title banner" "nav main"; row-gap: 15px; }
+.page.no-banner { grid-template-areas: "title main" "nav main"; grid-template-rows: auto 1fr; }
+.titlepanel { grid-area: title; background: var(--blue); width: 240px; min-height: 240px; padding: 10px; }
 .panel-title { color: #fff; font-size: 1.25rem; line-height: 1.2; font-weight: bold; margin: 0; }
-.banner { display: flex; flex: 1 1 0; min-width: 0; overflow: hidden; }
+.banner { grid-area: banner; display: flex; min-width: 0; overflow: hidden; }
 .banner img, .banner video { display: block; max-width: 100%; height: auto; flex: 0 1 auto; min-width: 0; }
 
-.columns { display: flex; gap: 0; }
-.sitenav { flex: 0 0 240px; }
+.sitenav { grid-area: nav; }
 .sitenav ul { list-style: none; margin: 0; padding: 0; }
-.sitenav li { margin: 0 0 2px; }
-.sitenav a { display: inline-block; padding: 2px 0; color: var(--muted); font-weight: bold; font-size: 1.05rem; text-decoration: none; }
+.sitenav li { margin: 0; }
+/* 24px line pitch keeps each menu link a 24px target (WCAG 2.2 target size) while staying compact */
+.sitenav a { display: inline-block; line-height: 24px; color: var(--muted); font-weight: bold; font-size: 1rem; text-decoration: none; }
 .sitenav a:hover { color: var(--blue); text-decoration: underline; }
 .sitenav a[aria-current="page"] { color: var(--blue); text-decoration: underline; text-decoration-thickness: 2px; }
 
-main { flex: 1 1 720px; min-width: 0; max-width: 720px; }
-main h2 { color: var(--blue); font-size: 1.15rem; line-height: 1.3; margin: 1.6rem 0 .6rem; }
+main { grid-area: main; min-width: 0; }
+main h2 { color: var(--blue); font-size: 1.05rem; line-height: 1.25; margin: 1.2rem 0 .5rem; }
 main h2:first-child { margin-top: 0; }
-main p, main li { font-size: .95rem; }
+main p, main li { font-size: .9rem; line-height: 1.3; }
+main p { margin: 0 0 .8em; }
 main ul, main ol { padding-left: 1.3rem; }
 
-figure { margin: 1rem 0 1.25rem; }
+figure { margin: .8rem 0 1rem; }
 figure img, figure video, main img, main video { display: block; max-width: 100%; height: auto; }
-figcaption, .caption { font-size: .85rem; line-height: 1.45; color: var(--text); margin-top: .4rem; }
+figcaption, .caption { font-size: .8rem; line-height: 1.3; color: var(--text); margin-top: .3rem; }
 
 /* Research tiles */
-.tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 240px)); gap: 0; }
+.tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 240px); gap: 0; }
 .tiles li { margin: 0; }
 .tile { position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden; color: #fff; text-decoration: none; }
 .tile img { display: block; width: 100%; height: 100%; object-fit: cover; }
@@ -62,27 +65,23 @@ figcaption, .caption { font-size: .85rem; line-height: 1.45; color: var(--text);
 .tile:focus-visible { outline: 3px solid var(--gold); outline-offset: -3px; box-shadow: none; }
 
 /* Previous / next project links (in the page flow, not fixed, so they never cover text when zoomed) */
-.project-nav { display: flex; flex-wrap: wrap; gap: 12px; margin: 2rem 0 1rem; }
+.project-nav { display: flex; flex-wrap: wrap; gap: 12px; margin: 1.5rem 0 1rem; }
 .project-nav a { flex: 1 1 220px; background: var(--blue); color: #fff; text-decoration: none; padding: .6rem .9rem; font-weight: bold; }
 .project-nav a:hover { text-decoration: underline; }
 .project-nav .dir { display: block; font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; }
 .project-nav .name { display: block; font-size: .95rem; }
 .project-nav .next { text-align: right; }
 
-.sitefooter { border-top: 1px solid #ccc; margin-top: 2rem; padding-top: .8rem; font-size: .85rem; color: var(--muted); }
-.sitefooter a { color: var(--muted); }
-
-.lede { margin-top: 0; }
 code { font-size: .9em; }
 
 /* Reflow for narrow screens and high zoom (WCAG 1.4.10) */
-@media (max-width: 760px) {
-  .titlepanel { flex: 1 1 100%; min-height: 0; width: auto; }
-  .banner { flex: 1 1 100%; }
-  .columns { flex-direction: column; }
-  .sitenav { flex: none; margin-bottom: 1rem; }
-  .sitenav ul { display: flex; flex-wrap: wrap; gap: 4px 16px; }
+@media (max-width: 1000px) {
   .tiles { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
+@media (max-width: 760px) {
+  .page, .page.no-banner { grid-template-columns: minmax(0, 1fr); grid-template-areas: "title" "banner" "nav" "main"; grid-template-rows: none; row-gap: 12px; }
+  .titlepanel { width: auto; min-height: 0; }
+  .sitenav ul { display: flex; flex-wrap: wrap; gap: 0 16px; }
   .tile-caption { inset: 20px; font-size: .9rem; }
 }
 @media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto !important; } }

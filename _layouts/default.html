@@ -11,38 +11,28 @@
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to main content</a>
-  <div class="page">
-    <header class="masthead">
-      <div class="titlepanel">
-        <h1 class="panel-title">{{ page.panel_title | default: page.title }}</h1>
-      </div>
-      {% if page.banner %}
-      <div class="banner">
-        {% for b in page.banner %}
-          {% if b.type == "video" %}
-          <video src="{{ b.src | relative_url }}" width="{{ b.width }}" height="{{ b.height }}" autoplay muted loop playsinline controls aria-label="Banner video"></video>
-          {% else %}
-          <img src="{{ b.src | relative_url }}" width="{{ b.width }}" height="{{ b.height }}" alt="">
-          {% endif %}
-        {% endfor %}
-      </div>
-      {% endif %}
+  <div class="page{% unless page.banner %} no-banner{% endunless %}">
+    <header class="titlepanel">
+      <h1 class="panel-title">{{ page.panel_title | default: page.title }}</h1>
     </header>
-
-    <div class="columns">
-      <nav class="sitenav" aria-label="Main">
-        {% include nav.html %}
-      </nav>
-
-      <main id="main" tabindex="-1">
-        {{ content }}
-        {% if page.layout == "project" %}{% include project-nav.html %}{% endif %}
-      </main>
+    {% if page.banner %}
+    <div class="banner">
+      {% for b in page.banner %}
+        {% if b.type == "video" %}
+        <video src="{{ b.src | relative_url }}" width="{{ b.width }}" height="{{ b.height }}" autoplay muted loop playsinline controls aria-label="Banner video"></video>
+        {% else %}
+        <img src="{{ b.src | relative_url }}" width="{{ b.width }}" height="{{ b.height }}" alt="">
+        {% endif %}
+      {% endfor %}
     </div>
-
-    <footer class="sitefooter">
-      <p>&copy; {{ site.time | date: '%Y' }} Hayden Taylor, Department of Mechanical Engineering, University of California, Berkeley. <a href="https://security.berkeley.edu/policy/privacy-statement-uc-berkeley-websites">Privacy statement</a>.</p>
-    </footer>
+    {% endif %}
+    <nav class="sitenav" aria-label="Main">
+      {% include nav.html %}
+    </nav>
+    <main id="main" tabindex="-1">
+      {{ content }}
+      {% if page.layout == "project" %}{% include project-nav.html %}{% endif %}
+    </main>
   </div>
   <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
   {% include analytics.html %}
