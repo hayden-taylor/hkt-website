@@ -1,0 +1,18 @@
+{% comment %}Previous/next links through the research tiles (rows of _data/projects.csv with Include? = 1).{% endcomment %}
+{% assign projects = site.data.projects | where: "Include?", "1" %}
+{% assign n = projects | size %}
+{% assign idx = nil %}
+{% for p in projects %}
+  {% assign f = p["Source file"] | prepend: "/" %}
+  {% if f == page.url %}{% assign idx = forloop.index0 %}{% endif %}
+{% endfor %}
+{% if idx != nil and n > 1 %}
+  {% assign pi = idx | plus: n | minus: 1 | modulo: n %}
+  {% assign ni = idx | plus: 1 | modulo: n %}
+  {% assign prev = projects[pi] %}
+  {% assign next = projects[ni] %}
+  <nav class="project-nav" aria-label="Research projects">
+    <a class="prev" href="{{ prev['Source file'] | prepend: '/' | relative_url }}"><span class="dir">Previous project</span> <span class="name">{{ prev['Project title'] }}</span></a>
+    <a class="next" href="{{ next['Source file'] | prepend: '/' | relative_url }}"><span class="dir">Next project</span> <span class="name">{{ next['Project title'] }}</span></a>
+  </nav>
+{% endif %}

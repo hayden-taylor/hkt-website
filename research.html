@@ -1,0 +1,19 @@
+---
+layout: default
+title: "Design for Emerging and Nanoscale Manufacturing: Research"
+description: "Research projects of the Design for Emerging and Nanoscale Manufacturing group at UC Berkeley."
+panel_title: "Design for Emerging<br>and Nanoscale<br>Manufacturing:<br>Research"
+---
+<p class="lede">Select a project to read more.</p>
+{% comment %}Tiles come from _data/projects.csv: set a row's Include? column to 1 to show it.{% endcomment %}
+{% assign projects = site.data.projects | where: "Include?", "1" %}
+<ul class="tiles">
+  {% for p in projects %}
+  <li>
+    <a class="tile" href="{{ p['Source file'] | prepend: '/' | relative_url }}">
+      <img src="{{ p['Thumbnail image'] | prepend: '/images/' | relative_url }}" width="240" height="240" alt="" loading="lazy">
+      <span class="tile-caption">{{ p['Project title'] }}</span>
+    </a>
+  </li>
+  {% endfor %}
+</ul>

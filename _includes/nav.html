@@ -1,0 +1,7 @@
+{% assign links = "Home|/,People|/people.html,Research|/research.html,Publications|/publications.html,Education|/education.html,Software|/software.html,OpenCAL|/OpenCAL.html,How we work|/how-we-work.html,Contact|/contact.html" | split: "," %}
+<ul>
+  {% for l in links %}
+    {% assign parts = l | split: "|" %}
+    <li><a href="{{ parts[1] | relative_url }}"{% if page.url == parts[1] %} aria-current="page"{% endif %}>{{ parts[0] }}</a></li>
+  {% endfor %}
+</ul>

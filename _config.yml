@@ -1,0 +1,17 @@
+title: "Design for Emerging and Nanoscale Manufacturing"
+description: "Hayden Taylor's research group, Department of Mechanical Engineering, UC Berkeley"
+author: "Hayden Taylor"
+lang: en
+# For a custom domain (e.g. https://www.haydentaylor.org) leave baseurl empty.
+# For a project site at https://<user>.github.io/<repo>/ set baseurl: "/<repo>".
+url: ""
+baseurl: ""
+markdown: kramdown
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - tools/
+  - "*.xlsx"
+  - copy-assets.bat
+  - "*.bak*"
